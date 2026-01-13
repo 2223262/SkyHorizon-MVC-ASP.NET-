@@ -33,7 +33,7 @@ Acesso limitado a funcionalidades de consulta e reserva:
 | **Reservas** | Funcionalidade para efetuar novas reservas. |
 | **Histórico de Reservas** | Visualização e gestão das reservas pessoais, com opção de cancelamento. |
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Backend:** ASP.NET Core MVC (C#)
 
@@ -43,7 +43,7 @@ Acesso limitado a funcionalidades de consulta e reserva:
 
 - **Autenticação:** Autenticação baseada em Cookies e Claims para RBAC.
 
-## 🚀 Como Executar o Projeto
+## Como Executar o Projeto
 
 ### Pré-requisitos
 
