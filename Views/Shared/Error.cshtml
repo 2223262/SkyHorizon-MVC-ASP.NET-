@@ -1,0 +1,24 @@
+@model SkyHorizon_2223262.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Erro";
+}
+
+<h1 class="text-danger">Erro.</h1>
+<h2 class="text-danger">Ocorreu um erro ao processar o seu pedido.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>ID do Pedido:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Modo de Desenvolvimento</h3>
+<p>
+    A troca para o ambiente de <strong>Desenvolvimento</strong> apresentará informações detalhadas sobre o erro ocorrido.
+</p>
+<p>
+    <strong>O ambiente de desenvolvimento não deve ser ativado para aplicações publicadas.</strong>
+    Pode resultar na exibição de informações sensíveis de exceções para os utilizadores finais.
+    Para depuração local, ative o ambiente de desenvolvimento definindo a variável de ambiente <strong>ASPNETCORE_ENVIRONMENT</strong> para <strong>Development</strong> e reinicie a aplicação.
+</p>

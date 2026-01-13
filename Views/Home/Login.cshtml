@@ -1,0 +1,40 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Entrar";
+}
+
+<div class="container" style="max-width: 400px; margin-top: 100px;">
+    <div style="background: var(--card); padding: 2rem; border-radius: 8px; border: 1px solid var(--border);">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Entrar</h2>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div style="color: #ff4d4d; margin-bottom: 1rem; text-align: center; padding: 0.75rem; background: rgba(255, 77, 77, 0.1); border-radius: 4px; border: 1px solid #ff4d4d;">
+                @ViewBag.Error
+            </div>
+        }
+
+        <form asp-action="Login" method="post">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--muted);">Nome de Utilizador</label>
+                <input type="text" name="username" class="form-control" required />
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--muted);">Palavra-passe</label>
+                <input type="password" name="password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+        </form>
+
+        <div style="margin-top: 1.5rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+            <p style="color: var(--muted); margin-bottom: 0.5rem;">Ainda não tem conta?</p>
+            <a asp-controller="Home" asp-action="Registar" class="btn btn-primary" style="display: inline-block;">Criar Conta</a>
+        </div>
+
+        <div style="margin-top: 1rem; text-align: center;">
+            <p style="color: var(--muted); font-size: 0.9rem;">
+                É administrador? <a asp-controller="Admin" asp-action="Login" style="color: var(--primary); text-decoration: none;">Entrar como Admin</a>
+            </p>
+        </div>
+    </div>
+</div>

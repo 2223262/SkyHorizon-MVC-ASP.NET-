@@ -1,0 +1,48 @@
+@model IEnumerable<SkyHorizon_2223262.Models.Booking>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Gerir Reservas";
+}
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Gerir Reservas</h1>
+        <a asp-action="Dashboard" class="btn btn-secondary">Voltar</a>
+    </div>
+
+    <div style="background: var(--card); border-radius: 8px; border: 1px solid var(--border); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; color: var(--foreground);">
+            <thead style="background: rgba(255, 107, 53, 0.1);">
+                <tr>
+                    <th style="padding: 1rem; text-align: left;">Destino</th>
+                    <th style="padding: 1rem; text-align: left;">Data Partida</th>
+                    <th style="padding: 1rem; text-align: left;">Passageiros</th>
+                    <th style="padding: 1rem; text-align: left;">Total</th>
+                    <th style="padding: 1rem; text-align: center;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="border-top: 1px solid var(--border);">
+                        <td style="padding: 1rem;">@(item.Destination?.Name ?? "N/A")</td>
+                        <td style="padding: 1rem;">@item.DepartureDate.ToShortDateString()</td>
+                        <td style="padding: 1rem;">@item.Passengers</td>
+                        <td style="padding: 1rem;">@item.TotalPrice.ToString("C")</td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <form asp-action="EliminarReserva" asp-route-id="@item.Id" method="post" style="display: inline;" onsubmit="return confirm('Tem a certeza que deseja cancelar esta reserva?')">
+                                <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.8rem; background: #ff4d4d;">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" style="padding: 2rem; text-align: center; color: var(--muted);">Nenhuma reserva encontrada.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

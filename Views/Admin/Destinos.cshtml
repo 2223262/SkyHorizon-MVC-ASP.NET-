@@ -1,0 +1,44 @@
+@model IEnumerable<SkyHorizon_2223262.Models.Destination>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Gerir Destinos";
+}
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Gerir Destinos</h1>
+        <div>
+            <a asp-action="Dashboard" class="btn btn-secondary">Voltar</a>
+            <a asp-action="CriarDestino" class="btn btn-primary">Novo Destino</a>
+        </div>
+    </div>
+
+    <div style="background: var(--card); border-radius: 8px; border: 1px solid var(--border); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; color: var(--foreground);">
+            <thead style="background: rgba(255, 107, 53, 0.1);">
+                <tr>
+                    <th style="padding: 1rem; text-align: left;">Nome</th>
+                    <th style="padding: 1rem; text-align: left;">País</th>
+                    <th style="padding: 1rem; text-align: left;">Distância</th>
+                    <th style="padding: 1rem; text-align: center;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="border-top: 1px solid var(--border);">
+                        <td style="padding: 1rem;">@item.Name</td>
+                        <td style="padding: 1rem;">@item.Country</td>
+                        <td style="padding: 1rem;">@item.DistanceFromPortugal km</td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <a asp-action="EditarDestino" asp-route-id="@item.Id" class="btn btn-secondary" style="padding: 0.4rem 0.8rem;">Editar</a>
+                            <form asp-action="EliminarDestino" asp-route-id="@item.Id" method="post" style="display: inline;" onsubmit="return confirm('Tem a certeza?')">
+                                <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.8rem; background: #ff4d4d;">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

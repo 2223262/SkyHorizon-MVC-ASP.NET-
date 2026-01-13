@@ -1,0 +1,37 @@
+@model SkyHorizon_2223262.Models.Destination
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Novo Destino";
+}
+
+<div class="container" style="max-width: 600px;">
+    <h1>Novo Destino</h1>
+    <div style="background: var(--card); padding: 2rem; border-radius: 8px; border: 1px solid var(--border); margin-top: 2rem;">
+        <form asp-action="CriarDestino" method="post">
+            <div style="margin-bottom: 1rem;">
+                <label asp-for="Name">Nome</label>
+                <input asp-for="Name" class="form-control" required />
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label asp-for="Country">País</label>
+                <input asp-for="Country" class="form-control" required />
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label asp-for="Description">Descrição</label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label asp-for="Image">Nome da Imagem (ex: paris.jpg)</label>
+                <input asp-for="Image" class="form-control" />
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label asp-for="DistanceFromPortugal">Distância (km)</label>
+                <input asp-for="DistanceFromPortugal" type="number" class="form-control" />
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar</button>
+                <a asp-action="Destinos" class="btn btn-secondary" style="flex: 1; text-align: center;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

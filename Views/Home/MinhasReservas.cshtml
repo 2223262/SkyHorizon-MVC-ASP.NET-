@@ -1,0 +1,89 @@
+@model IEnumerable<SkyHorizon_2223262.Models.Booking>
+@{
+    ViewData["Title"] = "Minhas Reservas";
+}
+
+<style>
+    .bookings-container {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    .booking-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .booking-table th {
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 2px solid var(--border);
+        color: var(--primary);
+        font-family: 'Space Mono', monospace;
+    }
+
+    .booking-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .status-badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        background: rgba(255, 107, 53, 0.2);
+        color: var(--primary);
+        border: 1px solid var(--primary);
+    }
+</style>
+
+<div class="container">
+    <h2 style="text-align: center;">Minhas Reservas</h2>
+    
+    <div class="bookings-container">
+        @if (!Model.Any())
+        {
+            <p style="text-align: center; color: var(--muted); padding: 2rem;">Ainda não tem nenhuma reserva efetuada.</p>
+        }
+        else
+        {
+            <table class="booking-table">
+                <thead>
+                    <tr>
+                        <th>Destino</th>
+                        <th>Partida</th>
+                        <th>Regresso</th>
+                        <th>Passageiros</th>
+                        <th>Preço Total</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@booking.Destination?.Name</strong><br>
+                                <small>@booking.SeatType</small>
+                            </td>
+                            <td>@booking.DepartureDate.ToShortDateString()</td>
+                            <td>@booking.ReturnDate.ToShortDateString()</td>
+                            <td>@booking.Passengers</td>
+                            <td>€@booking.TotalPrice</td>
+                            <td>
+                                <form asp-action="CancelarReserva" method="post">
+                                    <input type="hidden" name="id" value="@booking.Id" />
+                                    <button type="submit" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Cancelar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

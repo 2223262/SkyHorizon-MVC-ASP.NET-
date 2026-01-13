@@ -1,0 +1,27 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Login Admin";
+}
+
+<div class="container" style="max-width: 400px; margin-top: 100px;">
+    <div style="background: var(--card); padding: 2rem; border-radius: 8px; border: 1px solid var(--border);">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Login Admin</h2>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div style="color: #ff4d4d; margin-bottom: 1rem; text-align: center;">@ViewBag.Error</div>
+        }
+
+        <form asp-action="Login" method="post">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">Utilizador</label>
+                <input type="text" name="username" class="form-control" required />
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">Palavra-passe</label>
+                <input type="password" name="password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+        </form>
+    </div>
+</div>

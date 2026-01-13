@@ -1,0 +1,184 @@
+@model IEnumerable<SkyHorizon_2223262.Models.Destination>
+@{
+    ViewData["Title"] = "Início";
+}
+
+<style>
+    /* Carousel */
+    .carousel {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        margin-bottom: 3rem;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .carousel-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .carousel-slide.active {
+        opacity: 1;
+    }
+
+    .carousel-slide::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 159, 67, 0.1));
+    }
+
+    .carousel-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 2rem;
+        background: linear-gradient(to top, rgba(10, 14, 26, 0.95), transparent);
+        color: var(--foreground);
+        z-index: 2;
+    }
+
+    .home-hero {
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(255, 159, 67, 0.1) 100%);
+        padding: 4rem 2rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        border-radius: 8px;
+    }
+
+    .search-box {
+        background: rgba(26, 31, 53, 0.9);
+        border: 1px solid var(--border);
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 800px;
+        margin: 0 auto;
+        backdrop-filter: blur(10px);
+    }
+
+    .search-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        text-align: left;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.8rem;
+        background: var(--background);
+        border: 1px solid var(--border);
+        color: var(--foreground);
+        border-radius: 4px;
+    }
+
+    .slogan-section {
+        margin-top: 3rem;
+        text-align: center;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(255, 107, 53, 0.2);
+    }
+
+    .slogan-image {
+        width: 100%;
+        max-width: 1000px;
+        height: auto;
+        border-radius: 8px;
+        border: 2px solid var(--primary);
+    }
+</style>
+
+<div class="container">
+    <div class="carousel" id="mainCarousel">
+        @foreach (var dest in Model.Take(4))
+        {
+            <div class="carousel-slide @(dest.Id == 1 ? "active" : "")" style="background-image: url('@Url.Content("~/images/" + dest.Image)')">
+                <div class="carousel-content">
+                    <h2>@dest.Name, @dest.Country</h2>
+                    <p>@dest.Description</p>
+                    <a asp-controller="Home" asp-action="DetalheDestino" asp-route-id="@dest.Id" class="btn btn-primary" style="margin-top: 1rem; text-decoration: none; display: inline-block;">Ver Destino</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="home-hero">
+        <div class="home-hero-content">
+            <h1>Explore o Mundo</h1>
+            <p>Encontre os melhores voos para os destinos mais incríveis.</p>
+            
+            <div class="search-box">
+                <form class="search-grid">
+                    <div class="form-group">
+                        <label>Origem</label>
+                        <select class="form-control">
+                            <option>Portugal</option>
+                            <option>Espanha</option>
+                            <option>França</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Destino</label>
+                        <select class="form-control">
+                            @foreach (var dest in Model)
+                            {
+                                <option>@dest.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Partida</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Regresso</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </form>
+                <button class="btn btn-primary" style="width: 100%;">Pesquisar Voos</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="slogan-section">
+        <img src="@Url.Content("~/images/slogan_image.jpg")" alt="Follow the sun. We'll handle the rest" class="slogan-image" onerror="this.src='https://via.placeholder.com/1000x400?text=Slogan+Image+Not+Found'" />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000);
+    </script>
+}

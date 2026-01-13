@@ -1,0 +1,217 @@
+@model SkyHorizon_2223262.Models.Destination
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<style>
+    .destination-detail {
+        max-width: 1200px;
+        margin: 2rem auto;
+    }
+
+    .destination-hero {
+        height: 400px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .destination-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(10, 14, 26, 0.9), transparent);
+    }
+
+    .destination-hero-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 2rem;
+        color: var(--foreground);
+        z-index: 2;
+    }
+
+    .booking-section {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .destination-description {
+        background: var(--card);
+        padding: 2rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+    }
+
+    .booking-form {
+        background: var(--card);
+        padding: 2rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    .price-display {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .price-display h3 {
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    @@media (max-width: 768px) {
+        .booking-section {
+            grid-template-columns: 1fr;
+        }
+        
+        .booking-form {
+            position: static;
+        }
+    }
+</style>
+
+<div class="container destination-detail">
+    <div class="destination-hero" style="background-image: url('@Url.Content("~/images/" + Model.Image)')">
+        <div class="destination-hero-content">
+            <h1>@Model.Name, @Model.Country</h1>
+            <p style="font-size: 1.1rem; margin-top: 0.5rem;">@Model.Description</p>
+            <p style="color: var(--primary); font-weight: bold; margin-top: 1rem;">
+                <i class="bi bi-geo-alt"></i> @Model.DistanceFromPortugal km de Portugal
+            </p>
+        </div>
+    </div>
+
+    <div class="booking-section">
+        <div class="destination-description">
+            <h2>Sobre o Destino</h2>
+            <p style="color: var(--muted); line-height: 1.8; margin-top: 1rem;">
+                @Model.Description
+            </p>
+            
+            <h3 style="margin-top: 2rem;">Informações de Viagem</h3>
+            <ul style="color: var(--muted); line-height: 2; margin-top: 1rem;">
+                <li><i class="bi bi-check-circle" style="color: var(--primary);"></i> Voos diretos disponíveis</li>
+                <li><i class="bi bi-check-circle" style="color: var(--primary);"></i> Múltiplas opções de classe</li>
+                <li><i class="bi bi-check-circle" style="color: var(--primary);"></i> Cancelamento flexível</li>
+                <li><i class="bi bi-check-circle" style="color: var(--primary);"></i> Bagagem incluída</li>
+            </ul>
+        </div>
+
+        <div class="booking-form">
+            <h3 style="margin-bottom: 1.5rem; text-align: center;">Reservar Voo</h3>
+            
+            <div class="price-display">
+                <p style="margin: 0; color: var(--background); font-size: 0.9rem;">A partir de</p>
+                <h3 id="totalPrice">€@(Model.DistanceFromPortugal * 0.15m)</h3>
+                <p style="margin: 0; color: var(--background); font-size: 0.85rem;">por pessoa</p>
+            </div>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form asp-controller="Home" asp-action="FazerReserva" method="post" id="bookingForm">
+                    <input type="hidden" name="DestinationId" value="@Model.Id" />
+                    <input type="hidden" name="TotalPrice" id="hiddenTotalPrice" value="@(Model.DistanceFromPortugal * 0.15m)" />
+
+                    <div class="form-group">
+                        <label>Origem</label>
+                        <select name="OriginCountry" class="form-control" required>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Espanha">Espanha</option>
+                            <option value="França">França</option>
+                            <option value="Alemanha">Alemanha</option>
+                            <option value="Itália">Itália</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de Assento</label>
+                        <select name="SeatType" class="form-control" id="seatType" required>
+                            <option value="Económica" data-multiplier="1">Económica (€@(Model.DistanceFromPortugal * 0.15m))</option>
+                            <option value="Executiva" data-multiplier="2">Executiva (€@(Model.DistanceFromPortugal * 0.30m))</option>
+                            <option value="Primeira Classe" data-multiplier="3">Primeira Classe (€@(Model.DistanceFromPortugal * 0.45m))</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data de Partida</label>
+                        <input type="date" name="DepartureDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data de Regresso</label>
+                        <input type="date" name="ReturnDate" class="form-control" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de Passageiros</label>
+                        <input type="number" name="Passengers" class="form-control" id="passengers" min="1" max="10" value="1" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                        <i class="bi bi-check-circle"></i> Confirmar Reserva
+                    </button>
+                </form>
+            }
+            else
+            {
+                <div style="text-align: center; padding: 2rem 0;">
+                    <p style="color: var(--muted); margin-bottom: 1rem;">Faça login para reservar</p>
+                    <a asp-controller="Home" asp-action="Login" class="btn btn-primary" style="width: 100%;">Entrar</a>
+                    <p style="color: var(--muted); margin-top: 1rem; font-size: 0.9rem;">
+                        Não tem conta? <a asp-controller="Home" asp-action="Registar" style="color: var(--primary);">Registar</a>
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const basePrice = @(Model.DistanceFromPortugal * 0.15m);
+        const seatTypeSelect = document.getElementById('seatType');
+        const passengersInput = document.getElementById('passengers');
+        const totalPriceDisplay = document.getElementById('totalPrice');
+        const hiddenTotalPrice = document.getElementById('hiddenTotalPrice');
+
+        function updatePrice() {
+            const multiplier = parseFloat(seatTypeSelect?.options[seatTypeSelect.selectedIndex]?.dataset.multiplier || 1);
+            const passengers = parseInt(passengersInput?.value || 1);
+            const total = (basePrice * multiplier * passengers).toFixed(2);
+            
+            if (totalPriceDisplay) totalPriceDisplay.textContent = '€' + total;
+            if (hiddenTotalPrice) hiddenTotalPrice.value = total;
+        }
+
+        if (seatTypeSelect) seatTypeSelect.addEventListener('change', updatePrice);
+        if (passengersInput) passengersInput.addEventListener('input', updatePrice);
+    </script>
+}
