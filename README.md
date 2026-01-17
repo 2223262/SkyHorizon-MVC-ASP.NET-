@@ -110,7 +110,8 @@ Para testar as funcionalidades de Administrador, poderá ser necessário criar u
 
 ---
 
-##Video da pagina web: ```https://www.youtube.com/watch?v=ikTU4KZmDSI```
+## Vídeo da página web
+[Link do YouTube](https://www.youtube.com/watch?v=ikTU4KZmDSI)
 
 *Desenvolvido em conformidade com os requisitos do Módulo 5.*
 
